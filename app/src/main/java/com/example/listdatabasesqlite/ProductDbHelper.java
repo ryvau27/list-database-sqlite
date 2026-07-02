@@ -67,31 +67,29 @@ public class ProductDbHelper extends SQLiteOpenHelper {
      * Inserts a fixed set of sample products into the database
      */
     private void seedProducts(SQLiteDatabase db) {
-        int placeholder = R.drawable.ic_launcher_background;
-
         insert(db, "Laptop Pro 15",
                 "High-performance laptop with 15-inch display, 16GB RAM, and 512GB SSD.",
-                "TechWorld", 1299.99, placeholder);
+                "TechWorld", 1299.99, R.drawable.laptop);
 
         insert(db, "Wireless Headphones",
                 "Over-ear noise-cancelling headphones with 30-hour battery life.",
-                "SoundHouse", 249.99, placeholder);
+                "SoundHouse", 249.99, R.drawable.headphones);
 
         insert(db, "Running Shoes",
                 "Lightweight running shoes with responsive cushioning for all-terrain use.",
-                "StrideCo", 89.95, placeholder);
+                "StrideCo", 89.95, R.drawable.shoes);
 
         insert(db, "Coffee Maker",
                 "12-cup programmable coffee maker with built-in grinder and thermal carafe.",
-                "BrewMaster", 74.99, placeholder);
+                "BrewMaster", 74.99, R.drawable.coffee);
 
         insert(db, "Backpack 40L",
                 "Durable 40-liter hiking backpack with rain cover and ergonomic support.",
-                "TrailGear", 59.99, placeholder);
+                "TrailGear", 59.99, R.drawable.backpack);
 
         insert(db, "Smartwatch Series X",
                 "Fitness smartwatch with heart rate monitor, GPS, and 7-day battery life.",
-                "WristTech", 199.99, placeholder);
+                "WristTech", 199.99, R.drawable.watch);
     }
 
     /**
