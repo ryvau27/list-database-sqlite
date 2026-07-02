@@ -9,6 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SQLite database helper for the products catalog.
+ *
+ * <p>Creates the {@code products} table on first install and seeds it with
+ * sample data. Upgrading the database version drops and recreates the table.</p>
+ */
 public class ProductDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "products.db";
@@ -31,22 +37,35 @@ public class ProductDbHelper extends SQLiteOpenHelper {
             COL_PRICE + " REAL, " +
             COL_IMAGE_RES_ID + " INTEGER);";
 
+    /**
+     * @param context the application or activity context used to open the database
+     */
     public ProductDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Called once when the database is first created.
+     * Creates the products table and inserts data.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
         seedProducts(db);
     }
 
+    /**
+     * Called when the database version is incremented.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    /**
+     * Inserts a fixed set of sample products into the database
+     */
     private void seedProducts(SQLiteDatabase db) {
         int placeholder = R.drawable.ic_launcher_background;
 
@@ -75,6 +94,16 @@ public class ProductDbHelper extends SQLiteOpenHelper {
                 "WristTech", 199.99, placeholder);
     }
 
+    /**
+     * Inserts a single product row into the given database.
+     *
+     * @param db          the writable database
+     * @param name        the product name
+     * @param description the product description
+     * @param seller      the seller name
+     * @param price       the price in USD
+     * @param imageResId  the drawable resource ID for the product image
+     */
     private void insert(SQLiteDatabase db, String name, String description,
                         String seller, double price, int imageResId) {
         ContentValues values = new ContentValues();
@@ -86,6 +115,9 @@ public class ProductDbHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
     }
 
+    /**
+     * Queries all products from the database, sorted alphabetically by name.
+     */
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();

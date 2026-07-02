@@ -13,10 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * RecyclerView adapter for the selected-products list shown in SecondActivity.
+ */
 public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProductAdapter.ViewHolder> {
 
     private final List<Product> products;
 
+    /**
+     * @param products the list of products selected in MainActivity
+     *                 a copy is made so the original list is not mutated
+     */
     public SelectedProductAdapter(List<Product> products) {
         this.products = new ArrayList<>(products);
     }
@@ -29,6 +36,7 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
         return new ViewHolder(view);
     }
 
+    /** Binds all product fields — image, name, price, seller, and description — to the row. */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = products.get(position);
@@ -44,16 +52,27 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
         return products.size();
     }
 
+    /**
+     * Returns the live product list. Used by {@link SecondActivity#buildEmailBody()}
+     * to format the email body from the current adapter state.
+     *
+     * @return the mutable list backing this adapter
+     */
     public List<Product> getProducts() {
         return products;
     }
 
+    /**
+     * Removes all products from the adapter and notifies the RecyclerView.
+     * Does not modify the SQLite database.
+     */
     public void clearAll() {
         int size = products.size();
         products.clear();
         notifyItemRangeRemoved(0, size);
     }
 
+    /** ViewHolder for a single selected-product row showing full product detail. */
     static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView ivImage;
         final TextView tvName;

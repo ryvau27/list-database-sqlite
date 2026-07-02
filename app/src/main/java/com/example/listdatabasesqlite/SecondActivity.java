@@ -15,10 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Displays the products selected in MainActivity and provides a button
+ * to send their details to a predefined email address.
+ */
 public class SecondActivity extends AppCompatActivity {
 
     private SelectedProductAdapter adapter;
 
+    /**
+     * Registered before onCreate.
+     * Called when the user returns from the mail client.
+     */
     private final ActivityResultLauncher<Intent> emailLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Toast.makeText(this, R.string.toast_products_sent, Toast.LENGTH_LONG).show();
@@ -42,6 +50,10 @@ public class SecondActivity extends AppCompatActivity {
         btnSendEmail.setOnClickListener(v -> sendEmail());
     }
 
+    /**
+     * Builds an email intent pre-filled with the recipient,
+     * subject, and a formatted body listing each selected product's details.
+     */
     private void sendEmail() {
         String recipient = getString(R.string.email_recipient);
         String subject = getString(R.string.email_subject);
@@ -56,6 +68,9 @@ public class SecondActivity extends AppCompatActivity {
         emailLauncher.launch(intent);
     }
 
+    /**
+     * Formats the current adapter product list into a plain-text email body.
+     */
     private String buildEmailBody() {
         StringBuilder sb = new StringBuilder();
         for (Product p : adapter.getProducts()) {

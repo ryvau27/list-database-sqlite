@@ -11,9 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays the full product catalog loaded from
+ * SQLite and allows the user to select products before proceeding.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Intent used to pass the selected product list to SecondActivity.
+     */
     static final String EXTRA_SELECTED_PRODUCTS = "selected_products";
+
+    /** Minimum number of products the user must select to enable the Next button. */
     private static final int MIN_SELECTION = 3;
 
     private ProductAdapter adapter;
@@ -40,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Enables or disables the Next button based on the current selection count.
+     *
+     * @param selectedCount the number of products currently selected
+     */
     private void onSelectionChanged(int selectedCount) {
         btnNext.setEnabled(selectedCount >= MIN_SELECTION);
     }
