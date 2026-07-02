@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">List Database SQLite</string>
+
+    <!-- MainActivity -->
+    <string name="title_product_catalog">Product Catalog</string>
+    <string name="hint_select_products">Select at least 3 products to continue.</string>
+    <string name="btn_next">Next</string>
+
+    <!-- SecondActivity -->
+    <string name="title_selected_products">Selected Products</string>
+    <string name="btn_send_email">Send via Email</string>
+    <string name="email_subject">Selected Products</string>
+    <string name="email_recipient">sweng888mobileapps@gmail.com</string>
+    <string name="toast_products_sent">Products sent successfully!</string>
 </resources>

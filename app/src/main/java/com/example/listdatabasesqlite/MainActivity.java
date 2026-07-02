@@ -1,24 +1,60 @@
 package com.example.listdatabasesqlite;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Displays the full product catalog loaded from
+ * SQLite and allows the user to select products before proceeding.
+ */
 public class MainActivity extends AppCompatActivity {
+
+    /**
+     * Intent used to pass the selected product list to SecondActivity.
+     */
+    static final String EXTRA_SELECTED_PRODUCTS = "selected_products";
+
+    /** Minimum number of products the user must select to enable the Next button. */
+    private static final int MIN_SELECTION = 3;
+
+    private ProductAdapter adapter;
+    private Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        btnNext = findViewById(R.id.btnNext);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewProducts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Product> products = new ProductDbHelper(this).getAllProducts();
+        adapter = new ProductAdapter(products, this::onSelectionChanged);
+        recyclerView.setAdapter(adapter);
+
+        btnNext.setOnClickListener(v -> {
+            ArrayList<Product> selected = new ArrayList<>(adapter.getSelectedProducts());
+            Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra(EXTRA_SELECTED_PRODUCTS, selected);
+            startActivity(intent);
         });
+    }
+
+    /**
+     * Enables or disables the Next button based on the current selection count.
+     *
+     * @param selectedCount the number of products currently selected
+     */
+    private void onSelectionChanged(int selectedCount) {
+        btnNext.setEnabled(selectedCount >= MIN_SELECTION);
     }
 }
